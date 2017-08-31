@@ -12,6 +12,7 @@ class Enemy extends Aircraft {
         this.speed = randomBetween(2, 4)
         this.alive = true
         this.cooldown = 100
+        this.score = randomBetween(100, 300)
     }
     fire() {
         if (this.cooldown == 0 && this.alive) {

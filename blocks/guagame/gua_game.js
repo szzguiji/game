@@ -10,6 +10,7 @@ class GuaGame {
         this.actions = {}
         this.keydowns = {}
         this.scene = null
+        this.gameLevel = []
         this.canvas = document.querySelector('#id-canvas')
         this.context = this.canvas.getContext('2d')
 
@@ -60,6 +61,16 @@ class GuaGame {
     //
     registerAction(key, callback) {
         this.actions[key] = callback
+    }
+    // 为关卡添加元素
+    addGameLeve(element) {
+        this.gameLevel.push(element)
+    }
+    clearGameLeve() {
+        this.gameLevel = []
+    }
+    addScore(score) {
+        this.score += score
     }
     // timer
     runloop() {

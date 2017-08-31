@@ -7,6 +7,7 @@ class EnemyBullet extends Bullet {
     setup() {
         super.setup()
         this.speed = 3
+        this.score = randomBetween(20, 40)
     }
 
     update() {

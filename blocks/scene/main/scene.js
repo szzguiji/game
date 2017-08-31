@@ -8,17 +8,16 @@ class Scene extends guaScene {
     setup() {
 
         this.bg = GuaImage.new(this.game, 'bg')
-        this.paddle = Paddle.new(this.game, 'paddle')
-        this.ball = Ball.new(this.game, 'ball')
-        this.blocks = loadLevel(1, this.game)
-
         this.addElement(this.bg)
+
+        this.paddle = Paddle.new(this.game, 'paddle')
         this.addElement(this.paddle)
+
+        this.ball = Ball.new(this.game, 'ball')
         this.addElement(this.ball)
-        for (var i = 0; i < this.blocks.length; i++) {
-            var block = this.blocks[i]
-            this.addElement(block)
-        }
+
+        this.addBlocks()
+
         this.label = GuaLabel.new(this.game, '得分：0')
         this.label.resetPointion(0, 290)
         this.addElement(this.label)
@@ -48,9 +47,6 @@ class Scene extends guaScene {
             if (self.ball.hasPoint(x, y)) {
                 enableDrag = true
             }
-            if (!enableDrag){
-                self.addblock(event)
-            }
         })
         self.game.canvas.addEventListener('mouseup', function(event) {
             var x = event.offsetX
@@ -65,6 +61,18 @@ class Scene extends guaScene {
                 self.ball.y = y
             }
         })
+    }
+    addBlocks() {
+        // 判断是否有编辑关卡
+        if (this.game.gameLevel.length > 0) {
+            this.blocks = this.game.gameLevel
+        }else{
+            this.blocks = loadLevel(1, this.game)
+        }
+        for (var i = 0; i < this.blocks.length; i++) {
+            var block = this.blocks[i]
+            this.addElement(block)
+        }
     }
     update() {
         var s = this
@@ -83,7 +91,7 @@ class Scene extends guaScene {
                 b.kill()
                 // 球反弹
                 this.ball.反弹()
-                this.game.score += b.score
+                this.game.addScore(b.score)
             }
         }
         // 判断挡板与球相撞
@@ -96,15 +104,5 @@ class Scene extends guaScene {
         var s = this
         this.label.resetText('得分：' + s.game.score)
         super.draw()
-    }
-    addblock(event) {
-        var b = Block.new(this.game, 'block')
-        var x = b.w * Math.floor(event.offsetX / b.w)
-        var y = b.h * Math.floor(event.offsetY / b.h)
-        b.x = x
-        b.y = y
-
-        this.blocks.push(b)
-        this.addElement(b)
     }
 }
